@@ -123,6 +123,10 @@
 					><img src="trophy.png" alt="trohpy" />
 					<p>{brawler.trophies}</p></span
 				>
+				<span
+					><img src="star.png" alt="trohpy" />
+					<p>{brawler.rank}</p></span
+				>
 			</div>
 		{/each}
 	</div>
