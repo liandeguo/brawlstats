@@ -35,20 +35,20 @@
 
 	getJSON(fetchurl).then((data) => {
 		data = JSON.parse(data.contents);
-		playerName = data.name;
-		trophies = data.trophies;
-		highestTrophies = data.highestTrophies;
-		difference = highestTrophies - trophies;
-		duoVictories = data.duoVictories;
-		vs3Victories = data['3vs3Victories'];
-		soloVictories = data.soloVictories;
-		brawlersLength = data.brawlers.length;
-		tag = data.tag;
-		brawlers = data.brawlers;
-		// console.log(data);
-		// console.log(brawlers)s
-		console.log(playerName);
-		console.log(brawlers.name);
+		if (data.name) {
+			playerName = data.name;
+			trophies = data.trophies;
+			highestTrophies = data.highestTrophies;
+			difference = highestTrophies - trophies;
+			duoVictories = data.duoVictories;
+			vs3Victories = data['3vs3Victories'];
+			soloVictories = data.soloVictories;
+			brawlersLength = data.brawlers.length;
+			tag = data.tag;
+			brawlers = data.brawlers;
+		} else {
+			console.log('No Data Found');
+		}
 	});
 </script>
 
@@ -108,13 +108,21 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="brawlers">
 		{#each brawlers as brawler}
 			<div
 				class="card"
+				id="brawler-card"
 				style="background: url(portrait/{brawler.name.toLowerCase()}_portrait.png); background-size: cover;"
 			>
-				<h1>{brawler.name.toLowerCase()}</h1>
+				<h1 style="color: black;">
+					{brawler.name}
+				</h1>
+				<span
+					><img src="trophy.png" alt="trohpy" />
+					<p>{brawler.trophies}</p></span
+				>
 			</div>
 		{/each}
 	</div>
@@ -188,5 +196,10 @@
 		grid-template-rows: repeat(5, 1fr);
 		grid-column-gap: 0px;
 		grid-row-gap: 0px;
+	}
+
+	#brawler-card {
+		justify-content: end;
+		align-items: start;
 	}
 </style>
