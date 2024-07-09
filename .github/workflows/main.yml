@@ -18,14 +18,22 @@ jobs:
       with:
         node-version: '18'  # Set the Node.js version
 
+    - name: Install Yarn
+      run: npm install -g yarn
+
     - name: Install dependencies
-      run: npm install --legacy-peer-deps
+      run: yarn install
 
     - name: Build SvelteKit app
-      run: npm run build
+      run: yarn build
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: build  # Set this to your build output directory
+
+# Ensure you have this script in your package.json:
+# "scripts": {
+#   "build": "vite build"
+# }
