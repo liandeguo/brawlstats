@@ -66,6 +66,19 @@
 		.catch((error) => {
 			console.error('Error fetching data:', error);
 		});
+
+		let selected = 0
+		function categorySelector(selection) {
+			selected = selection
+			if (selected == 0) {
+				document.querySelector('#a_brawlers').style.textDecoration = 'underline';
+				document.querySelector('#a_battle_log').style.textDecoration = 'none';
+			}
+			if (selected == 1) {
+				document.querySelector('#a_brawlers').style.textDecoration = 'none';
+				document.querySelector('#a_battle_log').style.textDecoration = 'underline';
+			}
+		}
 </script>
 
 <main>
@@ -126,7 +139,13 @@
 			</div>
 		</div>
 
-		<div class="brawlers">
+		<div class="selector">
+			<a on:click={() => categorySelector(0)} id='a_brawlers' style="text-decoration: underline;">Brawlers</a>
+			<a on:click={() => categorySelector(1)} id='a_battle_log'>Battle Log</a>
+		</div>
+
+		{#if selected == 0}
+			<div class="brawlers">
 			{#each brawlers as brawler}
 				<div
 					class="card"
@@ -149,6 +168,10 @@
 				</div>
 			{/each}
 		</div>
+		{:else if selected == 1}
+		<p style="color: red;">Oh nothing there yet</p>
+		{/if}
+
 	{:else if noData == true}
 		{alert(
 			'The account #' + id + " doesn't seem to exist.\nAre you sure you entered the correct ID?"
@@ -181,7 +204,9 @@
 		justify-content: center;
 		flex-direction: column;
 	}
-
+	a {
+		color: black;
+	}
 	#name {
 		font-size: 28px;
 	}
@@ -231,5 +256,13 @@
 	#brawler-card {
 		justify-content: end;
 		align-items: start;
+	}
+
+	.selector {
+		margin: 10px;
+	}
+
+	.selector a {
+		margin: 0 10px 0 10px;
 	}
 </style>
