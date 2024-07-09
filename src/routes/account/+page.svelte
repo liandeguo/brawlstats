@@ -10,6 +10,7 @@
 	);
 	const fetchurl = 'https://api.allorigins.win/get?url=' + url;
 
+	let dataLoaded = false;
 	let playerName = '';
 	let trophies = 0;
 	let highestTrophies = 0;
@@ -33,26 +34,42 @@
 		}
 	}
 
-	getJSON(fetchurl).then((data) => {
-		data = JSON.parse(data.contents);
-		if (data.name) {
-			playerName = data.name;
-			trophies = data.trophies;
-			highestTrophies = data.highestTrophies;
-			difference = highestTrophies - trophies;
-			duoVictories = data.duoVictories;
-			vs3Victories = data['3vs3Victories'];
-			soloVictories = data.soloVictories;
-			brawlersLength = data.brawlers.length;
-			tag = data.tag;
-			brawlers = data.brawlers;
-		} else {
-			console.log('No Data Found');
-		}
-	});
+	getJSON(fetchurl)
+		.then((data) => {
+			if (data && data.contents) {
+				try {
+					data = JSON.parse(data.contents);
+					if (data.name) {
+						playerName = data.name;
+						trophies = data.trophies;
+						highestTrophies = data.highestTrophies;
+						difference = highestTrophies - trophies;
+						duoVictories = data.duoVictories;
+						vs3Victories = data['3vs3Victories'];
+						soloVictories = data.soloVictories;
+						brawlersLength = data.brawlers.length;
+						tag = data.tag;
+						brawlers = data.brawlers;
+						dataLoaded = true;
+						console.log(dataLoaded);
+					} else {
+						console.log('No Data Found');
+					}
+				} catch (error) {
+					console.error('Error parsing JSON:', error);
+				}
+			} else {
+				console.log('Invalid data received:', data);
+			}
+		})
+		.catch((error) => {
+			console.error('Error fetching data:', error);
+		});
+	console.log(dataLoaded);
 </script>
 
 <main>
+	<p>{dataLoaded}</p>
 	<div class="container">
 		<div class="card" style="background-color: #CD6441;">
 			<h2 id="name">{playerName}</h2>

@@ -26,6 +26,7 @@
  * ```
  */
 declare module '$env/static/private' {
+	export const npm_package_devDependencies__tailwindcss_typography: string;
 	export const MANPATH: string;
 	export const npm_package_devDependencies_prettier: string;
 	export const TERM_PROGRAM: string;
@@ -53,6 +54,7 @@ declare module '$env/static/private' {
 	export const KUBECONFIG: string;
 	export const SSH_AUTH_SOCK: string;
 	export const __CF_USER_TEXT_ENCODING: string;
+	export const npm_package_devDependencies_postcss: string;
 	export const npm_execpath: string;
 	export const npm_package_devDependencies_svelte: string;
 	export const npm_config_frozen_lockfile: string;
@@ -61,6 +63,7 @@ declare module '$env/static/private' {
 	export const __CFBundleIdentifier: string;
 	export const USER_ZDOTDIR: string;
 	export const PWD: string;
+	export const npm_package_devDependencies_tailwindcss: string;
 	export const npm_command: string;
 	export const JAVA_HOME: string;
 	export const npm_package_scripts_preview: string;
@@ -77,6 +80,7 @@ declare module '$env/static/private' {
 	export const npm_package_version: string;
 	export const npm_package_devDependencies__sveltejs_adapter_auto: string;
 	export const VSCODE_INJECTION: string;
+	export const npm_package_devDependencies_autoprefixer: string;
 	export const HOME: string;
 	export const SHLVL: string;
 	export const npm_package_type: string;
@@ -86,6 +90,7 @@ declare module '$env/static/private' {
 	export const npm_package_scripts_format: string;
 	export const npm_lifecycle_script: string;
 	export const VSCODE_GIT_IPC_HANDLE: string;
+	export const npm_package_devDependencies_prettier_plugin_tailwindcss: string;
 	export const npm_config_user_agent: string;
 	export const HOMEBREW_CELLAR: string;
 	export const INFOPATH: string;
@@ -125,6 +130,7 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
+		npm_package_devDependencies__tailwindcss_typography: string;
 		MANPATH: string;
 		npm_package_devDependencies_prettier: string;
 		TERM_PROGRAM: string;
@@ -152,6 +158,7 @@ declare module '$env/dynamic/private' {
 		KUBECONFIG: string;
 		SSH_AUTH_SOCK: string;
 		__CF_USER_TEXT_ENCODING: string;
+		npm_package_devDependencies_postcss: string;
 		npm_execpath: string;
 		npm_package_devDependencies_svelte: string;
 		npm_config_frozen_lockfile: string;
@@ -160,6 +167,7 @@ declare module '$env/dynamic/private' {
 		__CFBundleIdentifier: string;
 		USER_ZDOTDIR: string;
 		PWD: string;
+		npm_package_devDependencies_tailwindcss: string;
 		npm_command: string;
 		JAVA_HOME: string;
 		npm_package_scripts_preview: string;
@@ -176,6 +184,7 @@ declare module '$env/dynamic/private' {
 		npm_package_version: string;
 		npm_package_devDependencies__sveltejs_adapter_auto: string;
 		VSCODE_INJECTION: string;
+		npm_package_devDependencies_autoprefixer: string;
 		HOME: string;
 		SHLVL: string;
 		npm_package_type: string;
@@ -185,6 +194,7 @@ declare module '$env/dynamic/private' {
 		npm_package_scripts_format: string;
 		npm_lifecycle_script: string;
 		VSCODE_GIT_IPC_HANDLE: string;
+		npm_package_devDependencies_prettier_plugin_tailwindcss: string;
 		npm_config_user_agent: string;
 		HOMEBREW_CELLAR: string;
 		INFOPATH: string;

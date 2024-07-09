@@ -1,6 +1,6 @@
 <script>
-	var welcome = 'block';
-	var sign = 'none';
+	var welcome = 'none';
+	var sign = 'block';
 
 	function getstarted() {
 		welcome = 'none';
@@ -21,9 +21,10 @@
 
 	<div style="z-index: 100; display: {sign};">
 		<h2>Sign in</h2>
-		<h3>Enter your Brawl Stars ID</h3>
-		<input type="text" placeholder="YOURID" id="id" />
-		<button on:click={signin}> </button>
+		<h3 style="margin-bottom: 10px;">Enter your Brawl Stars ID</h3>
+		<input type="text" placeholder="YOURID" id="id" style="margin: 10px;" />
+		<br />
+		<button on:click={signin} style="margin: 0 0 30px 0; width: 288.667px;">Let's Go</button>
 	</div>
 </div>
 <div class="black"></div>
