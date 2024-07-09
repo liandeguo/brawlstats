@@ -11,6 +11,7 @@
 	const fetchurl = 'https://api.allorigins.win/get?url=' + url;
 
 	let dataLoaded = false;
+	let noData = false;
 	let playerName = '';
 	let trophies = 0;
 	let highestTrophies = 0;
@@ -51,9 +52,9 @@
 						tag = data.tag;
 						brawlers = data.brawlers;
 						dataLoaded = true;
-						console.log(dataLoaded);
 					} else {
 						console.log('No Data Found');
+						noData = true;
 					}
 				} catch (error) {
 					console.error('Error parsing JSON:', error);
@@ -65,88 +66,96 @@
 		.catch((error) => {
 			console.error('Error fetching data:', error);
 		});
-	console.log(dataLoaded);
 </script>
 
 <main>
-	<p>{dataLoaded}</p>
-	<div class="container">
-		<div class="card" style="background-color: #CD6441;">
-			<h2 id="name">{playerName}</h2>
-			<span
-				><img src="trophy.png" alt="trohpy" />
-				<p>{trophies}</p></span
-			>
-			<span style="align-items: end;"
-				><img src="id.png" alt="brawlstars id" />
-				<p>{tag}</p></span
-			>
-		</div>
-		<div class="card" style="background-color: #1A2F21;">
-			<div>
-				<h3>Most Trophies</h3>
+	{#if dataLoaded == true}
+		<div class="container">
+			<div class="card" style="background-color: #CD6441;">
+				<h2 id="name">{playerName}</h2>
 				<span
 					><img src="trophy.png" alt="trohpy" />
-					<p>{highestTrophies}</p></span
+					<p>{trophies}</p></span
 				>
-				<p><xxx>+{difference}</xxx> more than<br />current Trophies</p>
+				<span style="align-items: end;"
+					><img src="id.png" alt="brawlstars id" />
+					<p>{tag}</p></span
+				>
+			</div>
+			<div class="card" style="background-color: #1A2F21;">
+				<div>
+					<h3>Most Trophies</h3>
+					<span
+						><img src="trophy.png" alt="trohpy" />
+						<p>{highestTrophies}</p></span
+					>
+					<p><xxx>+{difference}</xxx> more than<br />current Trophies</p>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="container">
-		<div class="card" style="background-color: #426F3F;">
-			<div>
-				<h3>Wins</h3>
-				<span><img src="solo.png" alt="Solo Victories" />{soloVictories}</span>
-				<span><img src="duo.png" alt="Duo Victories" />{duoVictories}</span>
-				<span><img src="3v3.png" alt="3v3 Victories" />{vs3Victories}</span>
+		<div class="container">
+			<div class="card" style="background-color: #426F3F;">
+				<div>
+					<h3>Wins</h3>
+					<span><img src="solo.png" alt="Solo Victories" />{soloVictories}</span>
+					<span><img src="duo.png" alt="Duo Victories" />{duoVictories}</span>
+					<span><img src="3v3.png" alt="3v3 Victories" />{vs3Victories}</span>
+				</div>
+			</div>
+			<div class="card" style="background-color: #E8C05E; text-align:center">
+				<p style="font-size: 24px;">Has <b>{brawlersLength}</b> from<br />81 Brawlers</p>
 			</div>
 		</div>
-		<div class="card" style="background-color: #E8C05E; text-align:center">
-			<p style="font-size: 24px;">Has <b>{brawlersLength}</b> from<br />80 Brawlers</p>
-		</div>
-	</div>
 
-	<div class="container">
-		<div class="card" style="background-color: #6f3f61;">
-			<h3>Potential Trophies</h3>
-			<p>Potential Trophies show how many Trophies you could have if they were all on</p>
-			<p>Rank 20 {brawlersLength * 500}</p>
-			<p>Rank 25 {brawlersLength * 750}</p>
-		</div>
-		<div class="card" style="background-color: #1A2F21;">
-			<div>
-				<h3>Most Trophies</h3>
-				<span
-					><img src="trophy.png" alt="trohpy" />
-					<p>{highestTrophies}</p></span
-				>
-				<p><xxx>+{difference}</xxx> more than<br />current Trophies</p>
+		<div class="container">
+			<div class="card" style="background-color: #6f3f61;">
+				<h3>Potential Trophies</h3>
+				<p>Potential Trophies show how many Trophies you could have if they were all on</p>
+				<p>Rank 20 {brawlersLength * 500}</p>
+				<p>Rank 25 {brawlersLength * 750}</p>
+			</div>
+			<div class="card" style="background-color: #1A2F21;">
+				<div>
+					<h3>Most Trophies</h3>
+					<span
+						><img src="trophy.png" alt="trohpy" />
+						<p>{highestTrophies}</p></span
+					>
+					<p><xxx>+{difference}</xxx> more than<br />current Trophies</p>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="brawlers">
-		{#each brawlers as brawler}
-			<div
-				class="card"
-				id="brawler-card"
-				style="background: url(portrait/{brawler.name.toLowerCase()}_portrait.png); background-size: cover;"
-			>
-				<h1 style="color: black;">
-					{brawler.name}
-				</h1>
-				<span
-					><img src="trophy.png" alt="trohpy" />
-					<p>{brawler.trophies}</p></span
+		<div class="brawlers">
+			{#each brawlers as brawler}
+				<div
+					class="card"
+					id="brawler-card"
+					style="background: url(portrait/{brawler.name
+						.toLowerCase()
+						.replaceAll(' ', '')}_portrait.png); background-size: cover;"
 				>
-				<span
-					><img src="star.png" alt="trohpy" />
-					<p>{brawler.rank}</p></span
-				>
-			</div>
-		{/each}
-	</div>
+					<h1 style="color: black;">
+						{brawler.name}
+					</h1>
+					<span
+						><img src="trophy.png" alt="trohpy" />
+						<p>{brawler.trophies}</p></span
+					>
+					<span
+						><img src="star.png" alt="trohpy" />
+						<p>{brawler.rank}</p></span
+					>
+				</div>
+			{/each}
+		</div>
+	{:else if noData == true}
+		{alert(
+			'The account #' + id + " doesn't seem to exist.\nAre you sure you entered the correct ID?"
+		)}
+	{:else if dataLoaded == false}
+		<p style="color: red;">Data is getting loaded, please be patient.</p>
+	{/if}
 </main>
 
 <style>
