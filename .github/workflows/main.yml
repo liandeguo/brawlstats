@@ -19,7 +19,7 @@ jobs:
         node-version: '18'  # Set the Node.js version
 
     - name: Install dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
 
     - name: Build SvelteKit app
       run: npm run build
