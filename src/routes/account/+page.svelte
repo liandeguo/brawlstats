@@ -53,7 +53,6 @@
 						tag = data.tag;
 						brawlersUnsorted = data.brawlers;
 						dataLoaded = true;
-						sort('trophies');
 					} else {
 						console.log('No Data Found');
 						noData = true;
@@ -71,13 +70,12 @@
 
 	function sort(sorting) {
 		if (sorting == 'trophies') {
-			brawlers = brawlersUnsorted.sort((a, b) => b.trophies - a.trophies);
-		}
-		if (sorting == 'highestTrophies') {
-			brawlers = brawlersUnsorted.sort((a, b) => b.highestTrophies - a.highestTrophies);
-		}
-		if (sorting == 'powerlvl') {
-			brawlers = brawlersUnsorted.sort((a, b) => b.power - a.power);
+			brawlers = [...brawlersUnsorted].sort((a, b) => b.trophies - a.trophies);
+			console.log(document.querySelector('#brawler-card'));
+		} else if (sorting == 'highestTrophies') {
+			brawlers = [...brawlersUnsorted].sort((a, b) => b.highestTrophies - a.highestTrophies);
+		} else if (sorting == 'powerlvl') {
+			brawlers = [...brawlersUnsorted].sort((a, b) => b.power - a.power);
 		}
 	}
 
@@ -161,10 +159,11 @@
 		</div>
 
 		{#if selected == 0}
-			<select id="sort_brawlers">
-				<option on:click={() => sort('trophies')}>Trophies</option>
-				<option on:click={() => sort('highestTrophies')}>Highest Trophies</option>
-				<option on:click={() => sort('powerlvl')}>Power Level</option>
+			{sort('trophies')}
+			<select id="sort_brawlers" on:change={(event) => sort(event.target.value)}>
+				<option value="trophies">Trophies</option>
+				<option value="highestTrophies">Highest Trophies</option>
+				<option value="powerlvl">Power Level</option>
 			</select>
 			<p style="color: black;">Hover over a Brawler to show more information about it</p>
 			<div class="brawlers">
