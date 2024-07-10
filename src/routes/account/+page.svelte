@@ -21,6 +21,7 @@
 	let soloVictories = 0;
 	let brawlersLength = 0;
 	let brawlers = [];
+	let brawlersUnsorted = [];
 	let tag = '';
 	async function getJSON(url) {
 		try {
@@ -50,8 +51,9 @@
 						soloVictories = data.soloVictories;
 						brawlersLength = data.brawlers.length;
 						tag = data.tag;
-						brawlers = data.brawlers;
+						brawlersUnsorted = data.brawlers;
 						dataLoaded = true;
+						sort('trophies');
 					} else {
 						console.log('No Data Found');
 						noData = true;
@@ -67,18 +69,30 @@
 			console.error('Error fetching data:', error);
 		});
 
-		let selected = 0
-		function categorySelector(selection) {
-			selected = selection
-			if (selected == 0) {
-				document.querySelector('#a_brawlers').style.textDecoration = 'underline';
-				document.querySelector('#a_battle_log').style.textDecoration = 'none';
-			}
-			if (selected == 1) {
-				document.querySelector('#a_brawlers').style.textDecoration = 'none';
-				document.querySelector('#a_battle_log').style.textDecoration = 'underline';
-			}
+	function sort(sorting) {
+		if (sorting == 'trophies') {
+			brawlers = brawlersUnsorted.sort((a, b) => b.trophies - a.trophies);
 		}
+		if (sorting == 'highestTrophies') {
+			brawlers = brawlersUnsorted.sort((a, b) => b.highestTrophies - a.highestTrophies);
+		}
+		if (sorting == 'powerlvl') {
+			brawlers = brawlersUnsorted.sort((a, b) => b.power - a.power);
+		}
+	}
+
+	let selected = 0;
+	function categorySelector(selection) {
+		selected = selection;
+		if (selected == 0) {
+			document.querySelector('#a_brawlers').style.textDecoration = 'underline';
+			document.querySelector('#a_battle_log').style.textDecoration = 'none';
+		}
+		if (selected == 1) {
+			document.querySelector('#a_brawlers').style.textDecoration = 'none';
+			document.querySelector('#a_battle_log').style.textDecoration = 'underline';
+		}
+	}
 </script>
 
 <main>
@@ -140,38 +154,65 @@
 		</div>
 
 		<div class="selector">
-			<a on:click={() => categorySelector(0)} id='a_brawlers' style="text-decoration: underline;">Brawlers</a>
-			<a on:click={() => categorySelector(1)} id='a_battle_log'>Battle Log</a>
+			<a on:click={() => categorySelector(0)} id="a_brawlers" style="text-decoration: underline;"
+				>Brawlers</a
+			>
+			<a on:click={() => categorySelector(1)} id="a_battle_log">Battle Log</a>
 		</div>
 
 		{#if selected == 0}
+			<select id="sort_brawlers">
+				<option on:click={() => sort('trophies')}>Trophies</option>
+				<option on:click={() => sort('highestTrophies')}>Highest Trophies</option>
+				<option on:click={() => sort('powerlvl')}>Power Level</option>
+			</select>
+			<p style="color: black;">Hover over a Brawler to show more information about it</p>
 			<div class="brawlers">
-			{#each brawlers as brawler}
-				<div
-					class="card"
-					id="brawler-card"
-					style="background: url(portrait/{brawler.name
-						.toLowerCase()
-						.replaceAll(' ', '')}_portrait.png); background-size: cover;"
-				>
-					<h1 style="color: black;">
-						{brawler.name}
-					</h1>
-					<span
-						><img src="trophy.png" alt="trohpy" />
-						<p>{brawler.trophies}</p></span
+				{#each brawlers as brawler}
+					<div
+						class="card"
+						id="brawler-card"
+						style="background: url(portrait/{brawler.name
+							.toLowerCase()
+							.replaceAll(' ', '')}_portrait.png); background-size: cover;"
 					>
-					<span
-						><img src="star.png" alt="trohpy" />
-						<p>{brawler.rank}</p></span
-					>
-				</div>
-			{/each}
-		</div>
+						<div id="brawlersInfo">
+							<h1 style="">
+								{brawler.name}
+							</h1>
+							<div style="display: flex; align-items:end;">
+								<div>
+									<p>Most Trophies</p>
+									<span>
+										<img src="trophy.png" alt="highest brawler trophies" />
+										<p>
+											{brawler.highestTrophies} (+{brawler.highestTrophies - brawler.trophies})
+										</p></span
+									>
+									<span
+										><img src="trophy.png" alt="current trophies" />
+										<p>{brawler.trophies}</p></span
+									>
+									<span
+										><img src="star.png" alt="brawler rank" />
+										<p>{brawler.rank}</p></span
+									>
+								</div>
+								<div>
+									<span>
+										<img src="power.png" alt="powerlevel brawler" />
+										<p>{brawler.power}</p></span
+									>
+									<p>coming soon.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				{/each}
+			</div>
 		{:else if selected == 1}
-		<p style="color: red;">Oh nothing there yet</p>
+			<p style="color: red;">Oh nothing there yet</p>
 		{/if}
-
 	{:else if noData == true}
 		{alert(
 			'The account #' + id + " doesn't seem to exist.\nAre you sure you entered the correct ID?"
@@ -253,9 +294,44 @@
 		grid-row-gap: 0px;
 	}
 
+	#brawlersInfo {
+		display: none;
+	}
+	.brawlers .card:hover #brawlersInfo {
+		background-color: black;
+		width: 100%;
+		height: 100%;
+		border-radius: 15px;
+		display: flex;
+		flex-direction: column;
+		justify-content: end;
+		/* Glassmorpish */
+		background: rgba(255, 255, 255, 0.25);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-radius: 10px;
+		border: 1px solid rgba(255, 255, 255, 0.18);
+	}
+	.brawlers .card:active #brawlersInfo {
+		background-color: black;
+		width: 100%;
+		height: 100%;
+		border-radius: 15px;
+		display: flex;
+		flex-direction: column;
+		justify-content: end;
+		/* Glassmorpish */
+		background: rgba(255, 255, 255, 0.25);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-radius: 10px;
+		border: 1px solid rgba(255, 255, 255, 0.18);
+	}
+
 	#brawler-card {
 		justify-content: end;
 		align-items: start;
+		background-size: cover;
 	}
 
 	.selector {
