@@ -384,6 +384,7 @@
 		height: 100%;
 		border-radius: 15px;
 		display: flex;
+		padding: 10px;
 		flex-direction: column;
 		justify-content: end;
 		/* Glassmorpish */
