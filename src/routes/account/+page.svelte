@@ -53,6 +53,7 @@
 						tag = data.tag;
 						brawlersUnsorted = data.brawlers;
 						dataLoaded = true;
+						sort('trophies');
 					} else {
 						console.log('No Data Found');
 						noData = true;
@@ -67,16 +68,19 @@
 		.catch((error) => {
 			console.error('Error fetching data:', error);
 		});
-
+	const xxx = 'background-size: cover;';
 	function sort(sorting) {
 		if (sorting == 'trophies') {
 			brawlers = [...brawlersUnsorted].sort((a, b) => b.trophies - a.trophies);
-			console.log(document.querySelector('#brawler-card'));
 		} else if (sorting == 'highestTrophies') {
 			brawlers = [...brawlersUnsorted].sort((a, b) => b.highestTrophies - a.highestTrophies);
 		} else if (sorting == 'powerlvl') {
 			brawlers = [...brawlersUnsorted].sort((a, b) => b.power - a.power);
 		}
+		// Ensure background-size is set for all cards
+		document.querySelectorAll('#brawler-card').forEach((card) => {
+			card.style.backgroundSize = 'cover';
+		});
 	}
 
 	let selected = 0;
@@ -159,7 +163,6 @@
 		</div>
 
 		{#if selected == 0}
-			{sort('trophies')}
 			<select id="sort_brawlers" on:change={(event) => sort(event.target.value)}>
 				<option value="trophies">Trophies</option>
 				<option value="highestTrophies">Highest Trophies</option>
@@ -173,7 +176,7 @@
 						id="brawler-card"
 						style="background: url(portrait/{brawler.name
 							.toLowerCase()
-							.replaceAll(' ', '')}_portrait.png); background-size: cover;"
+							.replaceAll(' ', '')}_portrait.png); {xxx}"
 					>
 						<div id="brawlersInfo">
 							<h1 style="">
@@ -330,7 +333,6 @@
 	#brawler-card {
 		justify-content: end;
 		align-items: start;
-		background-size: cover;
 	}
 
 	.selector {
