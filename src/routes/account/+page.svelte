@@ -95,6 +95,19 @@
 			document.querySelector('#a_battle_log').style.textDecoration = 'underline';
 		}
 	}
+
+	function brawlerTrophiesColorCalc(current, highest) {
+		const difference = current - highest;
+		if (current == highest) {
+			return '#66ff00';
+		}
+		if (difference > 90) {
+			return '#EE4B2B';
+		}
+		if (current > highest) {
+			return 'yellow';
+		}
+	}
 </script>
 
 <main>
@@ -188,7 +201,12 @@
 									<span>
 										<img src="trophy.png" alt="highest brawler trophies" />
 										<p>
-											{brawler.highestTrophies} (+{brawler.highestTrophies - brawler.trophies})
+											{brawler.highestTrophies} (<haya
+												style="color: {brawlerTrophiesColorCalc(
+													brawler.highestTrophies,
+													brawler.trophies
+												)};">+{brawler.highestTrophies - brawler.trophies}</haya
+											>)
 										</p></span
 									>
 									<span
@@ -298,6 +316,7 @@
 
 	#brawlersInfo {
 		display: none;
+		box-sizing: border-box;
 	}
 	.brawlers .card:hover #brawlersInfo {
 		background-color: black;
@@ -305,6 +324,7 @@
 		height: 100%;
 		border-radius: 15px;
 		display: flex;
+		padding: 10px;
 		flex-direction: column;
 		justify-content: end;
 		/* Glassmorpish */
