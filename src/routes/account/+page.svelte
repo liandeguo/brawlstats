@@ -24,6 +24,7 @@
 	let brawlersUnsorted = [];
 	let tag = '';
 	async function getJSON(url) {
+		// Sends a API Request to the Brawl Stars API
 		try {
 			const response = await fetch(url);
 			if (!response.ok) {
@@ -37,10 +38,12 @@
 	}
 
 	getJSON(fetchurl)
+		// Calls the function to get data from the brawl stars api
 		.then((data) => {
 			if (data && data.contents) {
 				try {
 					data = JSON.parse(data.contents);
+					// Parses the data from the API into JSON to make it easier to use the data
 					if (data.name) {
 						playerName = data.name;
 						trophies = data.trophies;
@@ -70,6 +73,7 @@
 		});
 	const xxx = 'background-size: cover;';
 	function sort(sorting) {
+		// For sorting brawlers using the trophies, highest Trophies or the Power Level
 		if (sorting == 'trophies') {
 			brawlers = [...brawlersUnsorted].sort((a, b) => b.trophies - a.trophies);
 		} else if (sorting == 'highestTrophies') {
@@ -77,14 +81,11 @@
 		} else if (sorting == 'powerlvl') {
 			brawlers = [...brawlersUnsorted].sort((a, b) => b.power - a.power);
 		}
-		// Ensure background-size is set for all cards
-		document.querySelectorAll('#brawler-card').forEach((card) => {
-			card.style.backgroundSize = 'cover';
-		});
 	}
 
 	let selected = 0;
 	function categorySelector(selection) {
+		// Select between different pages one for brawlers the other one for battle log (ik I could improve this)
 		selected = selection;
 		if (selected == 0) {
 			document.querySelector('#a_brawlers').style.textDecoration = 'underline';
@@ -97,6 +98,7 @@
 	}
 
 	function brawlerTrophiesColorCalc(current, highest) {
+		// Shows a red yellow or green colour using the current brawler and the highest brawler trophies
 		const difference = current - highest;
 		if (current == highest) {
 			return '#66ff00';
@@ -111,6 +113,7 @@
 </script>
 
 <main>
+	<!-- Checks if the data from the API was loaded  -->
 	{#if dataLoaded == true}
 		<div class="container">
 			<div class="card" style="background-color: #CD6441;">
@@ -167,7 +170,7 @@
 				</div>
 			</div>
 		</div>
-
+		<!-- Select between categories, Brawlers and Battle Log -->
 		<div class="selector">
 			<a on:click={() => categorySelector(0)} id="a_brawlers" style="text-decoration: underline;"
 				>Brawlers</a
@@ -183,6 +186,7 @@
 			</select>
 			<p style="color: black;">Hover over a Brawler to show more information about it</p>
 			<div class="brawlers">
+				<!-- Import all brawlers and their portrait -->
 				{#each brawlers as brawler}
 					<div
 						class="card"
@@ -201,6 +205,8 @@
 									<span>
 										<img src="trophy.png" alt="highest brawler trophies" />
 										<p>
+											<!-- Calculate the difference between the highest Trophies of the Brawler and the current -->
+											<!-- Call a function that selects a fitting colour for the difference -->
 											{brawler.highestTrophies} (<haya
 												style="color: {brawlerTrophiesColorCalc(
 													brawler.highestTrophies,
@@ -234,10 +240,12 @@
 			<p style="color: red;">Oh nothing there yet</p>
 		{/if}
 	{:else if noData == true}
+		<!-- If the API gave a response without data this is shown. Could be because the account doesn't exist -->
 		{alert(
 			'The account #' + id + " doesn't seem to exist.\nAre you sure you entered the correct ID?"
 		)}
 	{:else if dataLoaded == false}
+		<!-- Is shown while the data is loaded, the API request is sent and the data is put into variables -->
 		<p style="color: red;">Data is getting loaded, please be patient.</p>
 	{/if}
 </main>
@@ -259,6 +267,7 @@
         height: 200px;
     } */
 
+	/* Basic Things */
 	main {
 		display: flex;
 		align-items: center;
@@ -276,6 +285,20 @@
 		display: flex;
 	}
 
+	span {
+		display: flex;
+		align-items: center;
+	}
+
+	.selector {
+		margin: 10px;
+	}
+
+	.selector a {
+		margin: 0 10px 0 10px;
+	}
+
+	/* Cards */
 	.card {
 		border-radius: 15px;
 		width: 40vw;
@@ -287,11 +310,12 @@
 		justify-content: center;
 	}
 
-	span {
-		display: flex;
-		align-items: center;
+	@media screen and (min-width: 500px) {
+		.card {
+			width: 200px;
+			height: 200px;
+		}
 	}
-
 	img {
 		height: 25px;
 		margin: 0 2px 0 0;
@@ -299,13 +323,8 @@
 	xxx {
 		color: #7eb500;
 	}
-	@media screen and (min-width: 500px) {
-		.card {
-			width: 200px;
-			height: 200px;
-		}
-	}
 
+	/* Brawler Listr */
 	.brawlers {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
@@ -317,6 +336,11 @@
 	#brawlersInfo {
 		display: none;
 		box-sizing: border-box;
+	}
+
+	#brawler-card {
+		justify-content: end;
+		align-items: start;
 	}
 	.brawlers .card:hover #brawlersInfo {
 		background-color: black;
@@ -348,18 +372,5 @@
 		-webkit-backdrop-filter: blur(10px);
 		border-radius: 10px;
 		border: 1px solid rgba(255, 255, 255, 0.18);
-	}
-
-	#brawler-card {
-		justify-content: end;
-		align-items: start;
-	}
-
-	.selector {
-		margin: 10px;
-	}
-
-	.selector a {
-		margin: 0 10px 0 10px;
 	}
 </style>
