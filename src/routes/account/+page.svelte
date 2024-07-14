@@ -56,7 +56,7 @@
 						tag = data.tag;
 						brawlersUnsorted = data.brawlers;
 						dataLoaded = true;
-						sort('trophies');
+						sort('trophies-d');
 					} else {
 						console.log('No Data Found');
 						noData = true;
@@ -74,8 +74,12 @@
 	const xxx = 'background-size: cover;';
 	function sort(sorting) {
 		// For sorting brawlers using the trophies, highest Trophies or the Power Level
-		if (sorting == 'trophies') {
+		if (sorting == 'trophies-d') {
+			// Descending Trophies
 			brawlers = [...brawlersUnsorted].sort((a, b) => b.trophies - a.trophies);
+		} else if (sorting == 'trophies-a') {
+			// Ascending Trophies
+			brawlers = [...brawlersUnsorted].sort((a, b) => a.trophies - b.trophies);
 		} else if (sorting == 'highestTrophies') {
 			brawlers = [...brawlersUnsorted].sort((a, b) => b.highestTrophies - a.highestTrophies);
 		} else if (sorting == 'powerlvl') {
@@ -180,7 +184,8 @@
 
 		{#if selected == 0}
 			<select id="sort_brawlers" on:change={(event) => sort(event.target.value)}>
-				<option value="trophies">Trophies</option>
+				<option value="trophies-d">Trophies Descending 📈</option>
+				<option value="trophies-a">Trophies Ascending 📉</option>
 				<option value="highestTrophies">Highest Trophies</option>
 				<option value="powerlvl">Power Level</option>
 			</select>
@@ -199,9 +204,9 @@
 							<h1 style="">
 								{brawler.name}
 							</h1>
-							<div style="display: flex; align-items:end;">
+							<p style="white-space: nowrap;">Most Trophies:</p>
+							<div style="display: flex; align-items:start;">
 								<div>
-									<p>Most Trophies</p>
 									<span>
 										<img src="trophy.png" alt="highest brawler trophies" />
 										<p>
@@ -229,7 +234,6 @@
 										<img src="power.png" alt="powerlevel brawler" />
 										<p>{brawler.power}</p></span
 									>
-									<p>coming soon.</p>
 								</div>
 							</div>
 						</div>
@@ -291,13 +295,29 @@
 	}
 
 	.selector {
-		margin: 10px;
+		margin: 10px 0 5px 0;
 	}
 
 	.selector a {
 		margin: 0 10px 0 10px;
 	}
 
+	select {
+		border: 0px;
+		color: black;
+		padding: 5px 20px;
+		border-radius: 10px;
+		background-color: #f5eedd;
+	}
+
+	@media screen and (max-width: 500px) {
+		h1 {
+			font-size: 6vw;
+		}
+		p {
+			font-size: 3.5vw;
+		}
+	}
 	/* Cards */
 	.card {
 		border-radius: 15px;
