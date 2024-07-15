@@ -1,15 +1,22 @@
 <script>
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-
+	import ProgressBar from '../../components/ProgressBar.svelte';
 	const id = $page.url.searchParams.get('id');
 	const url = encodeURI(
 		'https://bsproxy.royaleapi.dev/v1/players/%23' +
 			id +
 			'?Authorization=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6Ijk3ZDRhMzIzLWJiMmItNDYyNS04OGY3LWRhOWQ3MzUyOWZjNCIsImlhdCI6MTcyMDAyOTE1Mywic3ViIjoiZGV2ZWxvcGVyLzQ3YjJmZDgxLTZjYmEtN2QxYS0wZWIyLWJhZTIwY2FkNDNhMSIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiNDUuNzkuMjE4Ljc5Il0sInR5cGUiOiJjbGllbnQifV19.rhcA-17kcd7hdO3oGZQIMENFVMeQOOp7giJ5PvsOn5mhX7fuuuxbiggQdjonSOvJySUMBCB5UI43hn2nuQIwXg'
 	);
+	const BattleLogUrl = encodeURI(
+		'https://bsproxy.royaleapi.dev/v1/players/%23' +
+			id +
+			'/battlelog/?Authorization=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6Ijk3ZDRhMzIzLWJiMmItNDYyNS04OGY3LWRhOWQ3MzUyOWZjNCIsImlhdCI6MTcyMDAyOTE1Mywic3ViIjoiZGV2ZWxvcGVyLzQ3YjJmZDgxLTZjYmEtN2QxYS0wZWIyLWJhZTIwY2FkNDNhMSIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiNDUuNzkuMjE4Ljc5Il0sInR5cGUiOiJjbGllbnQifV19.rhcA-17kcd7hdO3oGZQIMENFVMeQOOp7giJ5PvsOn5mhX7fuuuxbiggQdjonSOvJySUMBCB5UI43hn2nuQIwXg'
+	);
 	const fetchurl = 'https://api.allorigins.win/get?url=' + url;
+	const fetchBattleLog = 'https://api.allorigins.win/get?url=' + BattleLogUrl;
 
+	// Variables for /players request
 	let dataLoaded = false;
 	let noData = false;
 	let playerName = '';
@@ -24,6 +31,9 @@
 	let brawlersUnsorted = [];
 	let tag = '';
 
+	// Variables for Battle Log request
+	let battlelog = [];
+
 	async function getJSON(url) {
 		// Sends a API Request to the Brawl Stars API
 		try {
@@ -37,7 +47,17 @@
 			return error;
 		}
 	}
-
+	// Get the Battle Log
+	getJSON(fetchBattleLog).then((data) => {
+		if (data && data.contents) {
+			data = JSON.parse(data.contents);
+			if (data.items) {
+				battlelog = data.items;
+				console.log(battlelog);
+			}
+		}
+	});
+	// Get the Player Information
 	getJSON(fetchurl)
 		// Calls the function to get data from the brawl stars api
 		.then((data) => {
@@ -115,6 +135,100 @@
 		if (current > highest) {
 			return 'yellow';
 		}
+	}
+
+	function getEventColor(event) {
+		// Get the matching color for the Event
+		const eventColors = [
+			{ event: 'duoShowdown', color: '#a3df56' },
+			{ event: 'soloShowdown', color: '#a3df56' },
+			{ event: 'brawlBall', color: '#9eb0f7' },
+			{ event: 'knockout', color: '#efa03c' },
+			{ event: 'gemGrab', color: '#c85bf7' },
+			{ event: 'hotZone', color: '#eb534c' },
+			{ event: 'heist', color: '#c85bf7' },
+			{ event: 'bounty', color: '#c85bf7' },
+			{ event: 'roboRumble', color: '#c85bf7' },
+			{ event: 'takedown', color: '#c85bf7' },
+			{ event: 'presentPlunder', color: '#c85bf7' },
+			{ event: 'loneStar', color: '#c85bf7' },
+			{ event: 'superCityRampage', color: '#c85bf7' },
+			{ event: 'volleyBrawl', color: '#c85bf7' },
+			{ event: 'basketBrawl', color: '#c85bf7' },
+			{ event: 'trophyThieves', color: '#c85bf7' },
+			{ event: 'duels', color: '#c85bf7' },
+			{ event: 'wipeout', color: '#c85bf7' },
+			{ event: 'payload', color: '#c85bf7' },
+			{ event: 'hunters', color: '#c85bf7' },
+			{ event: 'lastStand', color: '#c85bf7' },
+			{ event: 'botDrop', color: '#c85bf7' },
+			{ event: 'trophyEscape', color: '#c85bf7' }
+		];
+
+		const selectedEvent = eventColors.find((item) => item.event === event);
+		return selectedEvent ? selectedEvent.color : '';
+	}
+
+	function getProperEventName(event) {
+		// Get the matching Name for the Event
+		const eventNames = [
+			{ event: 'duoShowdown', name: 'Duo Showdown' },
+			{ event: 'soloShowdown', name: 'Solo Showdown' },
+			{ event: 'brawlBall', name: 'Brawl Ball' },
+			{ event: 'knockout', name: 'Knockout' },
+			{ event: 'gemGrab', name: 'Gem Grab' },
+			{ event: 'hotZone', name: 'Hot Zone' },
+			{ event: 'heist', name: 'Heist' },
+			{ event: 'bounty', name: 'Bounty' },
+			{ event: 'roboRumble', name: 'Robo Rumble' },
+			{ event: 'takedown', name: 'Takedown' },
+			{ event: 'presentPlunder', name: 'Present Plunder' },
+			{ event: 'loneStar', name: 'Lone Star' },
+			{ event: 'superCityRampage', name: 'Super City Rampage' },
+			{ event: 'volleyBrawl', name: 'Volleybrawl' },
+			{ event: 'basketBrawl', name: 'Basketbrawl' },
+			{ event: 'trophyThieves', name: 'Trophy Thieves' },
+			{ event: 'duels', name: 'Duels' },
+			{ event: 'wipeout', name: 'Wipeout' },
+			{ event: 'payload', name: 'Payload' },
+			{ event: 'hunters', name: 'Hunters' },
+			{ event: 'lastStand', name: 'Last Stand' },
+			{ event: 'botDrop', name: 'Bot Drop' },
+			{ event: 'trophyEscape', name: 'Trophy Escape' }
+		];
+		const selectedEvent = eventNames.find((item) => item.event === event);
+		return selectedEvent ? selectedEvent.name : '';
+	}
+
+	function redirectToOtherUsersProfile(tag, name) {
+		console.log(tag);
+		if (confirm('Do you want to visit the profile of ' + name + '?') == true) {
+			tag = tag;
+			window.location.href = '/account?id=' + tag.replace('#', '');
+		} else {
+		}
+	}
+
+	function changeTimeFormat(date) {
+		// Extract components from the timestamp string
+		let year = parseInt(date.substr(0, 4), 10);
+		let month = parseInt(date.substr(4, 2), 10) - 1; // Months are 0-indexed in JavaScript Date objects
+		let day = parseInt(date.substr(6, 2), 10);
+		let hour = parseInt(date.substr(9, 2), 10);
+		let minute = parseInt(date.substr(11, 2), 10);
+		let second = parseInt(date.substr(13, 2), 10);
+
+		// Create a new Date object using the extracted components
+		let dateI = new Date(Date.UTC(year, month, day, hour, minute, second));
+
+		let formattedDate =
+			`${dateI.getFullYear()}-${padZero(dateI.getMonth() + 1)}-${padZero(dateI.getDate())} ` +
+			`${padZero(dateI.getHours())}:${padZero(dateI.getMinutes())}:${padZero(dateI.getSeconds())}`;
+
+		function padZero(num) {
+			return num.toString().padStart(2, '0');
+		}
+		return formattedDate;
 	}
 </script>
 
@@ -221,7 +335,7 @@
 							id="brawler-card"
 							style="background: url(portrait/{brawler.name
 								.toLowerCase()
-								.replaceAll(' ', '')}_portrait.png); {xxx}"
+								.replaceAll(' ', '')}_portrait.webp); {xxx}"
 						>
 							<div id="brawlersInfo">
 								<h1 style="">
@@ -264,7 +378,102 @@
 					{/each}
 				</div>
 			{:else if selected == 1}
-				<p style="color: red;">Oh nothing there yet</p>
+				{#each battlelog as battle, index}
+					<div class="battle" style="background-color: {getEventColor(battle.battle.mode)};">
+						<div
+							style="display: flex; justify-content: space-between; align-items: center; width: 100%;"
+						>
+							<!-- Shows the icon of the event played -->
+							<div style="flex: 1;">
+								<img src={'battleIcons/' + battle.battle.mode + '.webp'} alt="" />
+							</div>
+							<!-- Shows the name of the event played -->
+							<div
+								style="flex: 2; display: flex; justify-content: center; align-items: center; text-align: center;"
+							>
+								<h4 style="flex-grow: 1;">{getProperEventName(battle.battle.mode)}</h4>
+							</div>
+							<!-- Shows the change in trophies in the game played -->
+							<div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+								{#if battle.battle.trophyChange != null}
+									<p>
+										<!-- Check if trophies are - or + if - don't add a + if + add a + -->
+										{#if Math.sign(battle.battle.trophyChange) == -1}
+											<x style="color: #EE4B2B;">{battle.battle.trophyChange}</x>
+										{:else}
+											+{battle.battle.trophyChange}
+										{/if}
+									</p>
+								{:else if battle.battle.type == 'ranked' || battle.battle.type == 'soloRanked'}
+									<!-- Check if ranked was played to display it -->
+									<p>Ranked</p>
+								{:else if battle.battle.trophyChange == null}
+									<!-- Is displayed when the server didn't respond with a trophy amount, for exmaple a error.-->
+									<p>null</p>
+								{/if}
+							</div>
+						</div>
+
+						<div
+							style="display: flex; justify-content: space-between; align-items: center; width: 100%;"
+						>
+							<div style="flex: 1;"></div>
+							<!-- Shows the time when the game was played -->
+							<div
+								style="flex: 2; display: flex; justify-content: center; align-items: center; text-align: center;"
+							>
+								<p style="flex-grow: 1;">{changeTimeFormat(battle.battleTime)}</p>
+							</div>
+							<!-- Shows the change in trophies in the game played -->
+							<div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+								{battle.battle.duration}s
+							</div>
+						</div>
+
+						<hr style="margin: 10px 0 10px 0; border: 1px solid white;" />
+						<div style="teams">
+							{#if battlelog[index].battle.players != null}
+								<!-- If the player played solo showdown this snipppet will run -->
+								<div class="soloShowdownPlayers">
+									{#each battlelog[index].battle.players as player}
+										<div class="soloPlayer">
+											<div
+												class="img"
+												style="background-image: url(./portrait/{player.brawler.name
+													.toLowerCase()
+													.replaceAll(' ', '')}_portrait.webp);"
+												title={player.brawler.name}
+											></div>
+											{player.name}
+										</div>
+									{/each}
+								</div>
+							{:else}
+								<!-- If the player played anything but solo showdown this is going to run -->
+								{#each battlelog[index].battle.teams as team}
+									<div class="team">
+										{#each team as player}
+											<div
+												id="teamMember"
+												on:click={redirectToOtherUsersProfile(player.tag, player.name)}
+											>
+												<div
+													class="img"
+													style="background-image: url(./portrait/{player.brawler.name
+														.toLowerCase()
+														.replaceAll(' ', '')}_portrait.webp);"
+													title={player.brawler.name}
+												></div>
+												<br />
+												<p style="margin: 0;">{player.name}</p>
+											</div>
+										{/each}
+									</div>
+								{/each}
+							{/if}
+						</div>
+					</div>
+				{/each}
 			{/if}
 		</div>
 	{:else if noData == true}
@@ -325,7 +534,7 @@
 		margin: 10px 0 10px 0;
 	}
 	header a {
-		color: white;
+		color: #bf6a4a;
 		text-decoration: none;
 	}
 	a {
@@ -457,5 +666,63 @@
 		-webkit-backdrop-filter: blur(10px);
 		border-radius: 10px;
 		border: 1px solid rgba(255, 255, 255, 0.18);
+	}
+
+	/* Battle Log */
+	.battle {
+		background-color: #1f2f23;
+		margin: 10px;
+		border-radius: 10px;
+		padding: 10px;
+		width: 78vw;
+	}
+
+	@media screen and (min-width: 500px) {
+		.battle {
+			width: 390px;
+		}
+	}
+
+	/* Battle Log */
+	.team {
+		background-color: rgba(255, 255, 255, 0.2);
+		border-radius: 7px;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		margin: 10px 0;
+		padding: 2px;
+	}
+
+	#teamMember {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+	}
+
+	#teamMember .img {
+		width: 40px;
+		height: 40px;
+		background-size: cover;
+	}
+
+	.soloShowdownPlayers {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.soloPlayer {
+		display: flex;
+		align-items: center;
+		margin: 4px 0;
+	}
+
+	.soloPlayer .img {
+		width: 40px;
+		height: 40px;
+		margin: 0 4px 0 0;
+		background-size: cover;
 	}
 </style>
