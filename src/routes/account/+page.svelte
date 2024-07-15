@@ -200,12 +200,35 @@
 		return selectedEvent ? selectedEvent.name : '';
 	}
 
-	function teams(x) {
-		let count = [];
-		console.log(x);
-		x.forEach((element) => {
-			count.push(element);
-		});
+	function redirectToOtherUsersProfile(tag, name) {
+		console.log(tag);
+		if (confirm('Do you want to visit the profile of ' + name + '?') == true) {
+			tag = tag;
+			window.location.href = '/account?id=' + tag.replace('#', '');
+		} else {
+		}
+	}
+
+	function changeTimeFormat(date) {
+		// Extract components from the timestamp string
+		let year = parseInt(date.substr(0, 4), 10);
+		let month = parseInt(date.substr(4, 2), 10) - 1; // Months are 0-indexed in JavaScript Date objects
+		let day = parseInt(date.substr(6, 2), 10);
+		let hour = parseInt(date.substr(9, 2), 10);
+		let minute = parseInt(date.substr(11, 2), 10);
+		let second = parseInt(date.substr(13, 2), 10);
+
+		// Create a new Date object using the extracted components
+		let dateI = new Date(Date.UTC(year, month, day, hour, minute, second));
+
+		let formattedDate =
+			`${dateI.getFullYear()}-${padZero(dateI.getMonth() + 1)}-${padZero(dateI.getDate())} ` +
+			`${padZero(dateI.getHours())}:${padZero(dateI.getMinutes())}:${padZero(dateI.getSeconds())}`;
+
+		function padZero(num) {
+			return num.toString().padStart(2, '0');
+		}
+		return formattedDate;
 	}
 </script>
 
@@ -390,45 +413,64 @@
 								{/if}
 							</div>
 						</div>
+
+						<div
+							style="display: flex; justify-content: space-between; align-items: center; width: 100%;"
+						>
+							<div style="flex: 1;"></div>
+							<!-- Shows the time when the game was played -->
+							<div
+								style="flex: 2; display: flex; justify-content: center; align-items: center; text-align: center;"
+							>
+								<p style="flex-grow: 1;">{changeTimeFormat(battle.battleTime)}</p>
+							</div>
+							<!-- Shows the change in trophies in the game played -->
+							<div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+								{battle.battle.duration}s
+							</div>
+						</div>
+
 						<hr style="margin: 10px 0 10px 0; border: 1px solid white;" />
 						<div style="teams">
 							{#if battlelog[index].battle.players != null}
-								{#each battlelog[index].battle.players as player}
-									<div>
-										<img
-											src="./portrait/{player.brawler.name
-												.toLowerCase()
-												.replaceAll(' ', '')}_portrait.webp"
-											alt=""
-										/>
-										{player.name}
-									</div>
-								{/each}
-							{:else}
-								{#each battlelog[index].battle.teams as team}
-									<div>
-										{#each team as player}
-											<img
-												src="./portrait/{player.brawler.name
+								<!-- If the player played solo showdown this snipppet will run -->
+								<div class="soloShowdownPlayers">
+									{#each battlelog[index].battle.players as player}
+										<div class="soloPlayer">
+											<div
+												class="img"
+												style="background-image: url(./portrait/{player.brawler.name
 													.toLowerCase()
-													.replaceAll(' ', '')}_portrait.webp"
-												alt=""
-											/>
+													.replaceAll(' ', '')}_portrait.webp);"
+												title={player.brawler.name}
+											></div>
 											{player.name}
+										</div>
+									{/each}
+								</div>
+							{:else}
+								<!-- If the player played anything but solo showdown this is going to run -->
+								{#each battlelog[index].battle.teams as team}
+									<div class="team">
+										{#each team as player}
+											<div
+												id="teamMember"
+												on:click={redirectToOtherUsersProfile(player.tag, player.name)}
+											>
+												<div
+													class="img"
+													style="background-image: url(./portrait/{player.brawler.name
+														.toLowerCase()
+														.replaceAll(' ', '')}_portrait.webp);"
+													title={player.brawler.name}
+												></div>
+												<br />
+												<p style="margin: 0;">{player.name}</p>
+											</div>
 										{/each}
 									</div>
 								{/each}
 							{/if}
-
-							<!-- {#each battlelog[index].battle.teams[0] as teamGroup}
-								{#each teamGroup as team}
-									<p>{team.name}</p>
-								{/each}
-							{/each} -->
-							<!-- {#each battlelog[index].battle.teams[0] as d}
-								{d.name}
-							{/each} -->
-							<!-- {teams(battle.battle.teams)} -->
 						</div>
 					</div>
 				{/each}
@@ -639,5 +681,48 @@
 		.battle {
 			width: 390px;
 		}
+	}
+
+	/* Battle Log */
+	.team {
+		background-color: rgba(255, 255, 255, 0.2);
+		border-radius: 7px;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		margin: 10px 0;
+		padding: 2px;
+	}
+
+	#teamMember {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+	}
+
+	#teamMember .img {
+		width: 40px;
+		height: 40px;
+		background-size: cover;
+	}
+
+	.soloShowdownPlayers {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.soloPlayer {
+		display: flex;
+		align-items: center;
+		margin: 4px 0;
+	}
+
+	.soloPlayer .img {
+		width: 40px;
+		height: 40px;
+		margin: 0 4px 0 0;
+		background-size: cover;
 	}
 </style>
