@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-
+	import ProgressBar from '../../components/ProgressBar.svelte';
 	const id = $page.url.searchParams.get('id');
 	const url = encodeURI(
 		'https://bsproxy.royaleapi.dev/v1/players/%23' +
@@ -53,6 +53,7 @@
 			data = JSON.parse(data.contents);
 			if (data.items) {
 				battlelog = data.items;
+				console.log(battlelog);
 			}
 		}
 	});
@@ -195,7 +196,6 @@
 			{ event: 'botDrop', name: 'Bot Drop' },
 			{ event: 'trophyEscape', name: 'Trophy Escape' }
 		];
-
 		const selectedEvent = eventNames.find((item) => item.event === event);
 		return selectedEvent ? selectedEvent.name : '';
 	}
@@ -383,6 +383,11 @@
 							</div>
 						</div>
 						<hr style="margin: 10px 0 10px 0; border: 1px solid white;" />
+						<div style="teams">
+							{#each battlelog.battle.battle.teams as team}
+								{console.log(battlelog.battle)}
+							{/each}
+						</div>
 					</div>
 				{/each}
 			{/if}
@@ -445,7 +450,7 @@
 		margin: 10px 0 10px 0;
 	}
 	header a {
-		color: white;
+		color: #bf6a4a;
 		text-decoration: none;
 	}
 	a {

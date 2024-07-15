@@ -1,0 +1,90 @@
+{
+    "battleTime": "20240714T000716.000Z",
+    "event": {
+        "id": 15000548,
+        "mode": "knockout",
+        "map": "Out in the Open"
+    },
+    "battle": {
+        "mode": "knockout",
+        "type": "soloRanked",
+        "result": "defeat",
+        "duration": 82,
+        "starPlayer": {
+            "tag": "#GGQ8PVV0J",
+            "name": "Nils hh",
+            "brawler": {
+                "id": 16000049,
+                "name": "BUZZ",
+                "power": 11,
+                "trophies": 2
+            }
+        },
+        "teams": [
+            [
+                {
+                    "tag": "#CP0RUPL9",
+                    "name": "练德",
+                    "brawler": {
+                        "id": 16000015,
+                        "name": "PIPER",
+                        "power": 9,
+                        "trophies": 2
+                    }
+                },
+                {
+                    "tag": "#2YP20P8QV8",
+                    "name": "Ликерн",
+                    "brawler": {
+                        "id": 16000019,
+                        "name": "PENNY",
+                        "power": 9,
+                        "trophies": 2
+                    }
+                },
+                {
+                    "tag": "#RV9P9YQL",
+                    "name": "Gabyuwu",
+                    "brawler": {
+                        "id": 16000079,
+                        "name": "ANGELO",
+                        "power": 9,
+                        "trophies": 2
+                    }
+                }
+            ],
+            [
+                {
+                    "tag": "#8J9QL2LRR",
+                    "name": "uzunkuyruk77",
+                    "brawler": {
+                        "id": 16000081,
+                        "name": "LILY",
+                        "power": 11,
+                        "trophies": 2
+                    }
+                },
+                {
+                    "tag": "#GGQ8PVV0J",
+                    "name": "Nils hh",
+                    "brawler": {
+                        "id": 16000049,
+                        "name": "BUZZ",
+                        "power": 11,
+                        "trophies": 2
+                    }
+                },
+                {
+                    "tag": "#YYPQVY90",
+                    "name": "°●Maшa●°",
+                    "brawler": {
+                        "id": 16000018,
+                        "name": "DARRYL",
+                        "power": 11,
+                        "trophies": 2
+                    }
+                }
+            ]
+        ]
+    }
+}
