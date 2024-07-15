@@ -8,8 +8,15 @@
 			id +
 			'?Authorization=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6Ijk3ZDRhMzIzLWJiMmItNDYyNS04OGY3LWRhOWQ3MzUyOWZjNCIsImlhdCI6MTcyMDAyOTE1Mywic3ViIjoiZGV2ZWxvcGVyLzQ3YjJmZDgxLTZjYmEtN2QxYS0wZWIyLWJhZTIwY2FkNDNhMSIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiNDUuNzkuMjE4Ljc5Il0sInR5cGUiOiJjbGllbnQifV19.rhcA-17kcd7hdO3oGZQIMENFVMeQOOp7giJ5PvsOn5mhX7fuuuxbiggQdjonSOvJySUMBCB5UI43hn2nuQIwXg'
 	);
+	const BattleLogUrl = encodeURI(
+		'https://bsproxy.royaleapi.dev/v1/players/%23' +
+			id +
+			'/battlelog/?Authorization=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6Ijk3ZDRhMzIzLWJiMmItNDYyNS04OGY3LWRhOWQ3MzUyOWZjNCIsImlhdCI6MTcyMDAyOTE1Mywic3ViIjoiZGV2ZWxvcGVyLzQ3YjJmZDgxLTZjYmEtN2QxYS0wZWIyLWJhZTIwY2FkNDNhMSIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiNDUuNzkuMjE4Ljc5Il0sInR5cGUiOiJjbGllbnQifV19.rhcA-17kcd7hdO3oGZQIMENFVMeQOOp7giJ5PvsOn5mhX7fuuuxbiggQdjonSOvJySUMBCB5UI43hn2nuQIwXg'
+	);
 	const fetchurl = 'https://api.allorigins.win/get?url=' + url;
+	const fetchBattleLog = 'https://api.allorigins.win/get?url=' + BattleLogUrl;
 
+	// Variables for /players request
 	let dataLoaded = false;
 	let noData = false;
 	let playerName = '';
@@ -24,6 +31,9 @@
 	let brawlersUnsorted = [];
 	let tag = '';
 
+	// Variables for Battle Log request
+	let battlelog = [];
+
 	async function getJSON(url) {
 		// Sends a API Request to the Brawl Stars API
 		try {
@@ -37,7 +47,16 @@
 			return error;
 		}
 	}
-
+	// Get the Battle Log
+	getJSON(fetchBattleLog).then((data) => {
+		if (data && data.contents) {
+			data = JSON.parse(data.contents);
+			if (data.items) {
+				battlelog = data.items;
+			}
+		}
+	});
+	// Get the Player Information
 	getJSON(fetchurl)
 		// Calls the function to get data from the brawl stars api
 		.then((data) => {
@@ -114,6 +133,51 @@
 		}
 		if (current > highest) {
 			return 'yellow';
+		}
+	}
+
+	function getEventColor(event) {
+		if (event == 'duoShowdown' || event == 'soloShowdown') {
+			return '#a3df56';
+		}
+		if (event == 'brawlBall') {
+			return '#9eb0f7';
+		}
+		if (event == 'knockout') {
+			return '#efa03c';
+		}
+		if (event == 'gemGrab') {
+			return '#c85bf7';
+		}
+		if (event == 'hotZone') {
+			return '#eb534c';
+		}
+		if (event == 'heist') {
+			return '#c85bf7';
+		}
+	}
+
+	function getProperEventName(event) {
+		if (event == 'duoShowdown') {
+			return 'Duo Showdown';
+		}
+		if (event == 'soloShowdown') {
+			return 'Solo Showdown';
+		}
+		if (event == 'brawlBall') {
+			return 'Brawl Ball';
+		}
+		if (event == 'knockout') {
+			return 'Knockout';
+		}
+		if (event == 'gemGrab') {
+			return 'Gem Grab';
+		}
+		if (event == 'hotZone') {
+			return 'Hot Zone';
+		}
+		if (event == 'heist') {
+			return 'Heist';
 		}
 	}
 </script>
@@ -201,7 +265,7 @@
 				<a on:click={() => categorySelector(1)} id="a_battle_log">Battle Log</a>
 			</div>
 
-			{#if selected == 0}
+			{#if selected == 0.1}
 				<select
 					id="sort_brawlers"
 					style="text-align: center;"
@@ -263,8 +327,34 @@
 						</div>
 					{/each}
 				</div>
-			{:else if selected == 1}
-				<p style="color: red;">Oh nothing there yet</p>
+			{:else if selected == 0}
+				{#each battlelog as battle}
+					<div class="battle" style="background-color: {getEventColor(battle.battle.mode)};">
+						<div style="display: flex; justify-content:space-between; align-items:center;">
+							<img src={'battleIcons/' + battle.battle.mode + '.png'} alt="" />
+							<h4>{getProperEventName(battle.battle.mode)}</h4>
+							<!-- Show the Trophy Change -->
+							{#if battle.battle.trophyChange != null}
+								<!-- If you just played normal and did get trophies -->
+								<p>
+									{#if Math.sign(battle.battle.trophyChange) == -1}
+										<!-- If the trophyChange isn't in plus don't show a + -->
+										{battle.battle.trophyChange}
+									{:else}
+										+{battle.battle.trophyChange}
+									{/if}
+								</p>
+							{:else if battle.battle.type == 'ranked' || battle.battle.type == 'soloRanked'}
+								<!-- If you played ranked and didn't get any trophies -->
+								<p>Ranked</p>
+							{:else if battle.battle.trophyChange == null}
+								<!-- If the trophy change is undefined idk why-->
+								<p>null</p>
+							{/if}
+						</div>
+						<hr style="margin: 10px 0 10px 0;" />
+					</div>
+				{/each}
 			{/if}
 		</div>
 	{:else if noData == true}
@@ -457,5 +547,20 @@
 		-webkit-backdrop-filter: blur(10px);
 		border-radius: 10px;
 		border: 1px solid rgba(255, 255, 255, 0.18);
+	}
+
+	/* Battle Log */
+	.battle {
+		background-color: #1f2f23;
+		margin: 10px;
+		border-radius: 10px;
+		padding: 10px;
+		width: 78vw;
+	}
+
+	@media screen and (min-width: 500px) {
+		.battle {
+			width: 390px;
+		}
 	}
 </style>
