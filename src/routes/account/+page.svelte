@@ -199,6 +199,14 @@
 		const selectedEvent = eventNames.find((item) => item.event === event);
 		return selectedEvent ? selectedEvent.name : '';
 	}
+
+	function teams(x) {
+		let count = [];
+		console.log(x);
+		x.forEach((element) => {
+			count.push(element);
+		});
+	}
 </script>
 
 <header>
@@ -347,7 +355,7 @@
 					{/each}
 				</div>
 			{:else if selected == 1}
-				{#each battlelog as battle}
+				{#each battlelog as battle, index}
 					<div class="battle" style="background-color: {getEventColor(battle.battle.mode)};">
 						<div
 							style="display: flex; justify-content: space-between; align-items: center; width: 100%;"
@@ -384,9 +392,43 @@
 						</div>
 						<hr style="margin: 10px 0 10px 0; border: 1px solid white;" />
 						<div style="teams">
-							{#each battlelog.battle.battle.teams as team}
-								{console.log(battlelog.battle)}
-							{/each}
+							{#if battlelog[index].battle.players != null}
+								{#each battlelog[index].battle.players as player}
+									<div>
+										<img
+											src="./portrait/{player.brawler.name
+												.toLowerCase()
+												.replaceAll(' ', '')}_portrait.webp"
+											alt=""
+										/>
+										{player.name}
+									</div>
+								{/each}
+							{:else}
+								{#each battlelog[index].battle.teams as team}
+									<div>
+										{#each team as player}
+											<img
+												src="./portrait/{player.brawler.name
+													.toLowerCase()
+													.replaceAll(' ', '')}_portrait.webp"
+												alt=""
+											/>
+											{player.name}
+										{/each}
+									</div>
+								{/each}
+							{/if}
+
+							<!-- {#each battlelog[index].battle.teams[0] as teamGroup}
+								{#each teamGroup as team}
+									<p>{team.name}</p>
+								{/each}
+							{/each} -->
+							<!-- {#each battlelog[index].battle.teams[0] as d}
+								{d.name}
+							{/each} -->
+							<!-- {teams(battle.battle.teams)} -->
 						</div>
 					</div>
 				{/each}

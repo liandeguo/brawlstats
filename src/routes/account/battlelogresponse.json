@@ -88,3 +88,129 @@
         ]
     }
 }
+// Showdown
+{
+    "battleTime": "20240713T234106.000Z",
+    "event": {
+        "id": 15000044,
+        "mode": "duoShowdown",
+        "map": "Cavern Churn"
+    },
+    "battle": {
+        "mode": "duoShowdown",
+        "type": "ranked",
+        "trophyChange": 13,
+        "teams": [
+            [
+                {
+                    "tag": "#CP0RUPL9",
+                    "name": "练德",
+                    "brawler": {
+                        "id": 16000049,
+                        "name": "BUZZ",
+                        "power": 10,
+                        "trophies": 363
+                    }
+                },
+                {
+                    "tag": "#8JG8R2Y98",
+                    "name": "FAZE_JAVI",
+                    "brawler": {
+                        "id": 16000006,
+                        "name": "BARLEY",
+                        "power": 7,
+                        "trophies": 363
+                    }
+                }
+            ],
+            [
+                {
+                    "tag": "#PLCL8JJ0C",
+                    "name": "zeyneep",
+                    "brawler": {
+                        "id": 16000081,
+                        "name": "LILY",
+                        "power": 6,
+                        "trophies": 244
+                    }
+                },
+                {
+                    "tag": "#PPGJJ8RYR",
+                    "name": "Eliff",
+                    "brawler": {
+                        "id": 16000046,
+                        "name": "BELLE",
+                        "power": 8,
+                        "trophies": 366
+                    }
+                }
+            ],
+            [
+                {
+                    "tag": "#GQUQUJC22",
+                    "name": "ReaperX",
+                    "brawler": {
+                        "id": 16000012,
+                        "name": "CROW",
+                        "power": 8,
+                        "trophies": 392
+                    }
+                },
+                {
+                    "tag": "#LYVY2LQ90",
+                    "name": "DA | Xenith",
+                    "brawler": {
+                        "id": 16000013,
+                        "name": "POCO",
+                        "power": 8,
+                        "trophies": 317
+                    }
+                }
+            ],
+            [
+                {
+                    "tag": "#2L9JR0CJCL",
+                    "name": "RandyOrton",
+                    "brawler": {
+                        "id": 16000023,
+                        "name": "LEON",
+                        "power": 9,
+                        "trophies": 412
+                    }
+                },
+                {
+                    "tag": "#LJ9CJY9P",
+                    "name": "off-white",
+                    "brawler": {
+                        "id": 16000026,
+                        "name": "BIBI",
+                        "power": 7,
+                        "trophies": 159
+                    }
+                }
+            ],
+            [
+                {
+                    "tag": "#R8VUPVQYR",
+                    "name": "lonely",
+                    "brawler": {
+                        "id": 16000082,
+                        "name": "BERRY",
+                        "power": 9,
+                        "trophies": 346
+                    }
+                },
+                {
+                    "tag": "#8UL208VPV",
+                    "name": "carnage",
+                    "brawler": {
+                        "id": 16000076,
+                        "name": "KIT",
+                        "power": 10,
+                        "trophies": 336
+                    }
+                }
+            ]
+        ]
+    }
+}
