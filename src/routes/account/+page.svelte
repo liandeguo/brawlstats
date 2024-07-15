@@ -116,138 +116,155 @@
 	}
 </script>
 
+<header>
+	<span>
+		<img src="back.png" alt="Back Arrrow" />
+		<a href="..">Go Back</a>
+	</span>
+	<span>
+		<img src="code.png" alt="" />
+		<a href="https://github.com/liandeguo/brawlstats">GitHub</a>
+	</span>
+</header>
 <main>
 	<!-- Checks if the data from the API was loaded  -->
 	{#if dataLoaded == true}
-		<header>
-			<span>
-				<img src="back.png" alt="Back Arrrow" />
-				<a href="..">Go Back</a>
-			</span>
-			<span>
-				<img src="code.png" alt="" />
-				<a href="https://github.com/liandeguo/brawlstats">GitHub</a>
-			</span>
-		</header>
-		<div class="container" style="">
-			<div class="card" style="background-color: #CD6441;">
-				<h2 id="name">{playerName}</h2>
-				<span
-					><img src="trophy.png" alt="trohpy" />
-					<p>{trophies}</p></span
-				>
-				<span style="align-items: end;"
-					><img src="id.png" alt="brawlstars id" />
-					<p>{tag}</p></span
-				>
-			</div>
-			<div class="card" style="background-color: #1A2F21;">
-				<div>
-					<h3>Most Trophies</h3>
+		<div class="mainInfo">
+			<div class="container" style="">
+				<div class="card" style="background-color: #CD6441;">
+					<h2 id="name">{playerName}</h2>
 					<span
 						><img src="trophy.png" alt="trohpy" />
-						<p>{highestTrophies}</p></span
+						<p>{trophies}</p></span
 					>
-					<p><xxx>+{difference}</xxx> more than<br />current Trophies</p>
+					<span style="align-items: end;"
+						><img src="id.png" alt="brawlstars id" />
+						<p>{tag}</p></span
+					>
+				</div>
+				<div class="card" style="background-color: #1A2F21;">
+					<div>
+						<h3>Most Trophies</h3>
+						<span
+							><img src="trophy.png" alt="trohpy" />
+							<p>{highestTrophies}</p></span
+						>
+						<p><xxx>+{difference}</xxx> more than<br />current Trophies</p>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="card" style="background-color: #426F3F;">
+					<div>
+						<h3>Wins</h3>
+						<span
+							><img
+								src="solo.png"
+								alt="Solo Victories"
+								title="Solo Victories"
+							/>{soloVictories}</span
+						>
+						<span
+							><img src="duo.png" alt="Duo Victories" title="Duo Victories" />{duoVictories}</span
+						>
+						<span
+							><img src="3v3.png" alt="3v3 Victories" title="3v3 Victories" />{vs3Victories}</span
+						>
+					</div>
+				</div>
+				<div class="card" style="background-color: #E8C05E; text-align:center">
+					<p style="font-size: 24px;">Has <b>{brawlersLength}</b> from<br />81 Brawlers</p>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="card" style="background-color: #6f3f61; text-align:center;">
+					<h3>Potential Trophies</h3>
+					<p>Potential Trophies show how many Trophies you could have if they were all on:</p>
+					<p>Rank 20 {brawlersLength * 500}</p>
+					<p>Rank 25 {brawlersLength * 750}</p>
+				</div>
+				<div class="card" style="background-color: #1f232f; text-align:center;">
+					<p>More Cards are still <br /> in development</p>
 				</div>
 			</div>
 		</div>
-		<div class="container">
-			<div class="card" style="background-color: #426F3F;">
-				<div>
-					<h3>Wins</h3>
-					<span
-						><img src="solo.png" alt="Solo Victories" title="Solo Victories" />{soloVictories}</span
-					>
-					<span><img src="duo.png" alt="Duo Victories" title="Duo Victories" />{duoVictories}</span>
-					<span><img src="3v3.png" alt="3v3 Victories" title="3v3 Victories" />{vs3Victories}</span>
-				</div>
-			</div>
-			<div class="card" style="background-color: #E8C05E; text-align:center">
-				<p style="font-size: 24px;">Has <b>{brawlersLength}</b> from<br />81 Brawlers</p>
-			</div>
-		</div>
 
-		<div class="container">
-			<div class="card" style="background-color: #6f3f61; text-align:center;">
-				<h3>Potential Trophies</h3>
-				<p>Potential Trophies show how many Trophies you could have if they were all on:</p>
-				<p>Rank 20 {brawlersLength * 500}</p>
-				<p>Rank 25 {brawlersLength * 750}</p>
+		<div class="moreThings">
+			<!-- Select between categories, Brawlers and Battle Log -->
+			<div class="selector" style="text-align: center;">
+				<a on:click={() => categorySelector(0)} id="a_brawlers" style="text-decoration: underline;"
+					>Brawlers</a
+				>
+				<a on:click={() => categorySelector(1)} id="a_battle_log">Battle Log</a>
 			</div>
-			<div class="card" style="background-color: #1f232f; text-align:center;">
-				<p>More Cards are still <br /> in development</p>
-			</div>
-		</div>
-		<!-- Select between categories, Brawlers and Battle Log -->
-		<div class="selector">
-			<a on:click={() => categorySelector(0)} id="a_brawlers" style="text-decoration: underline;"
-				>Brawlers</a
-			>
-			<a on:click={() => categorySelector(1)} id="a_battle_log">Battle Log</a>
-		</div>
 
-		{#if selected == 0}
-			<select id="sort_brawlers" on:change={(event) => sort(event.target.value)}>
-				<option value="trophies-d">Trophies Descending 📈</option>
-				<option value="trophies-a">Trophies Ascending 📉</option>
-				<option value="highestTrophies">Highest Trophies</option>
-				<option value="powerlvl">Power Level</option>
-			</select>
-			<p style="color: black;">Hover over a Brawler to show more information about it</p>
-			<div class="brawlers">
-				<!-- Import all brawlers and their portrait -->
-				{#each brawlers as brawler}
-					<div
-						class="card"
-						id="brawler-card"
-						style="background: url(portrait/{brawler.name
-							.toLowerCase()
-							.replaceAll(' ', '')}_portrait.png); {xxx}"
-					>
-						<div id="brawlersInfo">
-							<h1 style="">
-								{brawler.name}
-							</h1>
-							<p style="white-space: nowrap;">Most Trophies:</p>
-							<div style="display: flex; align-items:start;">
-								<div>
-									<span>
-										<img src="trophy.png" alt="highest brawler trophies" />
-										<p>
-											<!-- Calculate the difference between the highest Trophies of the Brawler and the current -->
-											<!-- Call a function that selects a fitting colour for the difference -->
-											{brawler.highestTrophies} (<haya
-												style="color: {brawlerTrophiesColorCalc(
-													brawler.highestTrophies,
-													brawler.trophies
-												)};">+{brawler.highestTrophies - brawler.trophies}</haya
-											>)
-										</p></span
-									>
-									<span
-										><img src="trophy.png" alt="current trophies" />
-										<p>{brawler.trophies}</p></span
-									>
-									<span
-										><img src="star.png" alt="brawler rank" />
-										<p>{brawler.rank}</p></span
-									>
-								</div>
-								<div>
-									<span>
-										<img src="power.png" alt="powerlevel brawler" />
-										<p>{brawler.power}</p></span
-									>
+			{#if selected == 0}
+				<select
+					id="sort_brawlers"
+					style="text-align: center;"
+					on:change={(event) => sort(event.target.value)}
+				>
+					<option value="trophies-d">Trophies Descending 📈</option>
+					<option value="trophies-a">Trophies Ascending 📉</option>
+					<option value="highestTrophies">Highest Trophies</option>
+					<option value="powerlvl">Power Level</option>
+				</select>
+				<p style="color: black;">Hover over a Brawler to show more information about it</p>
+				<div class="brawlers">
+					<!-- Import all brawlers and their portrait -->
+					{#each brawlers as brawler}
+						<div
+							class="card"
+							id="brawler-card"
+							style="background: url(portrait/{brawler.name
+								.toLowerCase()
+								.replaceAll(' ', '')}_portrait.png); {xxx}"
+						>
+							<div id="brawlersInfo">
+								<h1 style="">
+									{brawler.name}
+								</h1>
+								<p style="white-space: nowrap;">Most Trophies:</p>
+								<div style="display: flex; align-items:start;">
+									<div>
+										<span>
+											<img src="trophy.png" alt="highest brawler trophies" />
+											<p>
+												<!-- Calculate the difference between the highest Trophies of the Brawler and the current -->
+												<!-- Call a function that selects a fitting colour for the difference -->
+												{brawler.highestTrophies} (<haya
+													style="color: {brawlerTrophiesColorCalc(
+														brawler.highestTrophies,
+														brawler.trophies
+													)};">+{brawler.highestTrophies - brawler.trophies}</haya
+												>)
+											</p></span
+										>
+										<span
+											><img src="trophy.png" alt="current trophies" />
+											<p>{brawler.trophies}</p></span
+										>
+										<span
+											><img src="star.png" alt="brawler rank" />
+											<p>{brawler.rank}</p></span
+										>
+									</div>
+									<div>
+										<span>
+											<img src="power.png" alt="powerlevel brawler" />
+											<p>{brawler.power}</p></span
+										>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				{/each}
-			</div>
-		{:else if selected == 1}
-			<p style="color: red;">Oh nothing there yet</p>
-		{/if}
+					{/each}
+				</div>
+			{:else if selected == 1}
+				<p style="color: red;">Oh nothing there yet</p>
+			{/if}
+		</div>
 	{:else if noData == true}
 		<!-- If the API gave a response without data this is shown. Could be because the account doesn't exist -->
 		{alert(
@@ -282,6 +299,18 @@
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
+	}
+
+	@media screen and (min-width: 800px) {
+		main {
+			flex-direction: row;
+			align-items: start;
+			justify-content: start;
+		}
+
+		.mainInfo {
+			margin-top: 76px;
+		}
 	}
 
 	header {
@@ -370,6 +399,20 @@
 		grid-template-rows: repeat(5, 1fr);
 		grid-column-gap: 0px;
 		grid-row-gap: 0px;
+	}
+
+	@media screen and (min-width: 800px) {
+		.moreThings {
+			width: 100%;
+		}
+		.brawlers {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			grid-template-rows: repeat(5, 1fr);
+			gap: 0;
+			grid-column-gap: 0px;
+			grid-row-gap: 0px;
+		}
 	}
 
 	#brawlersInfo {
