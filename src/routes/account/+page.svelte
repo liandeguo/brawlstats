@@ -23,6 +23,7 @@
 	let brawlers = [];
 	let brawlersUnsorted = [];
 	let tag = '';
+
 	async function getJSON(url) {
 		// Sends a API Request to the Brawl Stars API
 		try {
@@ -57,6 +58,7 @@
 						brawlersUnsorted = data.brawlers;
 						dataLoaded = true;
 						sort('trophies-d');
+						heap.addUserProperties({ tag: tag, playerName: playerName });
 					} else {
 						console.log('No Data Found');
 						noData = true;
