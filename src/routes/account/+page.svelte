@@ -137,48 +137,67 @@
 	}
 
 	function getEventColor(event) {
-		if (event == 'duoShowdown' || event == 'soloShowdown') {
-			return '#a3df56';
-		}
-		if (event == 'brawlBall') {
-			return '#9eb0f7';
-		}
-		if (event == 'knockout') {
-			return '#efa03c';
-		}
-		if (event == 'gemGrab') {
-			return '#c85bf7';
-		}
-		if (event == 'hotZone') {
-			return '#eb534c';
-		}
-		if (event == 'heist') {
-			return '#c85bf7';
-		}
+		// Get the matching color for the Event
+		const eventColors = [
+			{ event: 'duoShowdown', color: '#a3df56' },
+			{ event: 'soloShowdown', color: '#a3df56' },
+			{ event: 'brawlBall', color: '#9eb0f7' },
+			{ event: 'knockout', color: '#efa03c' },
+			{ event: 'gemGrab', color: '#c85bf7' },
+			{ event: 'hotZone', color: '#eb534c' },
+			{ event: 'heist', color: '#c85bf7' },
+			{ event: 'bounty', color: '#c85bf7' },
+			{ event: 'roboRumble', color: '#c85bf7' },
+			{ event: 'takedown', color: '#c85bf7' },
+			{ event: 'presentPlunder', color: '#c85bf7' },
+			{ event: 'loneStar', color: '#c85bf7' },
+			{ event: 'superCityRampage', color: '#c85bf7' },
+			{ event: 'volleyBrawl', color: '#c85bf7' },
+			{ event: 'basketBrawl', color: '#c85bf7' },
+			{ event: 'trophyThieves', color: '#c85bf7' },
+			{ event: 'duels', color: '#c85bf7' },
+			{ event: 'wipeout', color: '#c85bf7' },
+			{ event: 'payload', color: '#c85bf7' },
+			{ event: 'hunters', color: '#c85bf7' },
+			{ event: 'lastStand', color: '#c85bf7' },
+			{ event: 'botDrop', color: '#c85bf7' },
+			{ event: 'trophyEscape', color: '#c85bf7' }
+		];
+
+		const selectedEvent = eventColors.find((item) => item.event === event);
+		return selectedEvent ? selectedEvent.color : '';
 	}
 
 	function getProperEventName(event) {
-		if (event == 'duoShowdown') {
-			return 'Duo Showdown';
-		}
-		if (event == 'soloShowdown') {
-			return 'Solo Showdown';
-		}
-		if (event == 'brawlBall') {
-			return 'Brawl Ball';
-		}
-		if (event == 'knockout') {
-			return 'Knockout';
-		}
-		if (event == 'gemGrab') {
-			return 'Gem Grab';
-		}
-		if (event == 'hotZone') {
-			return 'Hot Zone';
-		}
-		if (event == 'heist') {
-			return 'Heist';
-		}
+		// Get the matching Name for the Event
+		const eventNames = [
+			{ event: 'duoShowdown', name: 'Duo Showdown' },
+			{ event: 'soloShowdown', name: 'Solo Showdown' },
+			{ event: 'brawlBall', name: 'Brawl Ball' },
+			{ event: 'knockout', name: 'Knockout' },
+			{ event: 'gemGrab', name: 'Gem Grab' },
+			{ event: 'hotZone', name: 'Hot Zone' },
+			{ event: 'heist', name: 'Heist' },
+			{ event: 'bounty', name: 'Bounty' },
+			{ event: 'roboRumble', name: 'Robo Rumble' },
+			{ event: 'takedown', name: 'Takedown' },
+			{ event: 'presentPlunder', name: 'Present Plunder' },
+			{ event: 'loneStar', name: 'Lone Star' },
+			{ event: 'superCityRampage', name: 'Super City Rampage' },
+			{ event: 'volleyBrawl', name: 'Volleybrawl' },
+			{ event: 'basketBrawl', name: 'Basketbrawl' },
+			{ event: 'trophyThieves', name: 'Trophy Thieves' },
+			{ event: 'duels', name: 'Duels' },
+			{ event: 'wipeout', name: 'Wipeout' },
+			{ event: 'payload', name: 'Payload' },
+			{ event: 'hunters', name: 'Hunters' },
+			{ event: 'lastStand', name: 'Last Stand' },
+			{ event: 'botDrop', name: 'Bot Drop' },
+			{ event: 'trophyEscape', name: 'Trophy Escape' }
+		];
+
+		const selectedEvent = eventNames.find((item) => item.event === event);
+		return selectedEvent ? selectedEvent.name : '';
 	}
 </script>
 
@@ -330,27 +349,38 @@
 			{:else if selected == 0}
 				{#each battlelog as battle}
 					<div class="battle" style="background-color: {getEventColor(battle.battle.mode)};">
-						<div style="display: flex; justify-content:space-between; align-items:center;">
-							<img src={'battleIcons/' + battle.battle.mode + '.png'} alt="" />
-							<h4>{getProperEventName(battle.battle.mode)}</h4>
-							<!-- Show the Trophy Change -->
-							{#if battle.battle.trophyChange != null}
-								<!-- If you just played normal and did get trophies -->
-								<p>
-									{#if Math.sign(battle.battle.trophyChange) == -1}
-										<!-- If the trophyChange isn't in plus don't show a + -->
-										{battle.battle.trophyChange}
-									{:else}
-										+{battle.battle.trophyChange}
-									{/if}
-								</p>
-							{:else if battle.battle.type == 'ranked' || battle.battle.type == 'soloRanked'}
-								<!-- If you played ranked and didn't get any trophies -->
-								<p>Ranked</p>
-							{:else if battle.battle.trophyChange == null}
-								<!-- If the trophy change is undefined idk why-->
-								<p>null</p>
-							{/if}
+						<div
+							style="display: flex; justify-content: space-between; align-items: center; width: 100%;"
+						>
+							<!-- Shows the icon of the event played -->
+							<div style="flex: 1;">
+								<img src={'battleIcons/' + battle.battle.mode + '.png'} alt="" />
+							</div>
+							<!-- Shows the name of the event played -->
+							<div
+								style="flex: 2; display: flex; justify-content: center; align-items: center; text-align: center;"
+							>
+								<h4 style="flex-grow: 1;">{getProperEventName(battle.battle.mode)}</h4>
+							</div>
+							<!-- Shows the change in trophies in the game played -->
+							<div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+								{#if battle.battle.trophyChange != null}
+									<p>
+										<!-- Check if trophies are - or + if - don't add a + if + add a + -->
+										{#if Math.sign(battle.battle.trophyChange) == -1}
+											{battle.battle.trophyChange}
+										{:else}
+											+{battle.battle.trophyChange}
+										{/if}
+									</p>
+								{:else if battle.battle.type == 'ranked' || battle.battle.type == 'soloRanked'}
+									<!-- Check if ranked was played to display it -->
+									<p>Ranked</p>
+								{:else if battle.battle.trophyChange == null}
+									<!-- Is displayed when the server didn't respond with a trophy amount, for exmaple a error.-->
+									<p>null</p>
+								{/if}
+							</div>
 						</div>
 						<hr style="margin: 10px 0 10px 0;" />
 					</div>
