@@ -119,7 +119,17 @@
 <main>
 	<!-- Checks if the data from the API was loaded  -->
 	{#if dataLoaded == true}
-		<div class="container">
+		<header>
+			<span>
+				<img src="back.png" alt="Back Arrrow" />
+				<a href="..">Go Back</a>
+			</span>
+			<span>
+				<img src="code.png" alt="" />
+				<a href="https://github.com/liandeguo/brawlstats">GitHub</a>
+			</span>
+		</header>
+		<div class="container" style="">
 			<div class="card" style="background-color: #CD6441;">
 				<h2 id="name">{playerName}</h2>
 				<span
@@ -146,9 +156,11 @@
 			<div class="card" style="background-color: #426F3F;">
 				<div>
 					<h3>Wins</h3>
-					<span><img src="solo.png" alt="Solo Victories" />{soloVictories}</span>
-					<span><img src="duo.png" alt="Duo Victories" />{duoVictories}</span>
-					<span><img src="3v3.png" alt="3v3 Victories" />{vs3Victories}</span>
+					<span
+						><img src="solo.png" alt="Solo Victories" title="Solo Victories" />{soloVictories}</span
+					>
+					<span><img src="duo.png" alt="Duo Victories" title="Duo Victories" />{duoVictories}</span>
+					<span><img src="3v3.png" alt="3v3 Victories" title="3v3 Victories" />{vs3Victories}</span>
 				</div>
 			</div>
 			<div class="card" style="background-color: #E8C05E; text-align:center">
@@ -157,21 +169,14 @@
 		</div>
 
 		<div class="container">
-			<div class="card" style="background-color: #6f3f61;">
+			<div class="card" style="background-color: #6f3f61; text-align:center;">
 				<h3>Potential Trophies</h3>
-				<p>Potential Trophies show how many Trophies you could have if they were all on</p>
+				<p>Potential Trophies show how many Trophies you could have if they were all on:</p>
 				<p>Rank 20 {brawlersLength * 500}</p>
 				<p>Rank 25 {brawlersLength * 750}</p>
 			</div>
-			<div class="card" style="background-color: #1A2F21;">
-				<div>
-					<h3>Most Trophies</h3>
-					<span
-						><img src="trophy.png" alt="trohpy" />
-						<p>{highestTrophies}</p></span
-					>
-					<p><xxx>+{difference}</xxx> more than<br />current Trophies</p>
-				</div>
+			<div class="card" style="background-color: #1f232f; text-align:center;">
+				<p>More Cards are still <br /> in development</p>
 			</div>
 		</div>
 		<!-- Select between categories, Brawlers and Battle Log -->
@@ -277,6 +282,20 @@
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
+	}
+
+	header {
+		display: flex;
+		width: 98vw;
+		justify-content: space-between;
+		box-sizing: border-box;
+		align-items: center;
+		padding: 10px;
+		margin: 10px 0 10px 0;
+	}
+	header a {
+		color: white;
+		text-decoration: none;
 	}
 	a {
 		color: black;
