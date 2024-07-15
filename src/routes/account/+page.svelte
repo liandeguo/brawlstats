@@ -284,7 +284,7 @@
 				<a on:click={() => categorySelector(1)} id="a_battle_log">Battle Log</a>
 			</div>
 
-			{#if selected == 0.1}
+			{#if selected == 0}
 				<select
 					id="sort_brawlers"
 					style="text-align: center;"
@@ -304,7 +304,7 @@
 							id="brawler-card"
 							style="background: url(portrait/{brawler.name
 								.toLowerCase()
-								.replaceAll(' ', '')}_portrait.png); {xxx}"
+								.replaceAll(' ', '')}_portrait.webp); {xxx}"
 						>
 							<div id="brawlersInfo">
 								<h1 style="">
@@ -346,7 +346,7 @@
 						</div>
 					{/each}
 				</div>
-			{:else if selected == 0}
+			{:else if selected == 1}
 				{#each battlelog as battle}
 					<div class="battle" style="background-color: {getEventColor(battle.battle.mode)};">
 						<div
@@ -354,7 +354,7 @@
 						>
 							<!-- Shows the icon of the event played -->
 							<div style="flex: 1;">
-								<img src={'battleIcons/' + battle.battle.mode + '.png'} alt="" />
+								<img src={'battleIcons/' + battle.battle.mode + '.webp'} alt="" />
 							</div>
 							<!-- Shows the name of the event played -->
 							<div
@@ -368,7 +368,7 @@
 									<p>
 										<!-- Check if trophies are - or + if - don't add a + if + add a + -->
 										{#if Math.sign(battle.battle.trophyChange) == -1}
-											{battle.battle.trophyChange}
+											<x style="color: #EE4B2B;">{battle.battle.trophyChange}</x>
 										{:else}
 											+{battle.battle.trophyChange}
 										{/if}
@@ -382,7 +382,7 @@
 								{/if}
 							</div>
 						</div>
-						<hr style="margin: 10px 0 10px 0;" />
+						<hr style="margin: 10px 0 10px 0; border: 1px solid white;" />
 					</div>
 				{/each}
 			{/if}
