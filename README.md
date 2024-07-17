@@ -70,7 +70,7 @@
 
 
 
-<!-- ABOUT THE PROJECT -->
+<!-- ABOUT THE project -->
 ## About The Project
 
 [![Brawl Stars Tracker Screen Shot][product-screenshot]](https://brawl.soty.one)
